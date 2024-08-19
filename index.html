@@ -34,6 +34,125 @@
                 <li></li>
             </ul>
         </section>
+        <section>
+            <section>
+                <h3>Introduction</h3>
+                <p>Laravel's events provide a simple <u>observer pattern</u> implementation, allowing you to subscribe
+                    and listen for various events that occur within your application</p>
+            </section>
+            <section>
+                <p>Event classes are typically stored in the <u>app/Events directory</u>, while their listeners are stored in
+                    <u>app/Listeners</u></p>
+            </section>
+            <section>
+                <h3>Introduction - Example</h3>
+                <p>...For example, you may wish to send a Slack notification to your user each time an order has shipped.</p>
+                <p> Instead of coupling your order processing code to your Slack notification code, you can raise an App\Events\OrderShipped event which a listener can receive and use to dispatch a Slack notification.</p>
+            </section>
+        </section>
+        <section>
+            <h3>Generating Events and Listeners</h3>
+            <pre class="fragment"><code>php artisan make:event PodcastProcessed
+
+php artisan make:listener SendPodcastNotification --event=PodcastProcessed</code></pre>
+            <p class="fragment">or <a href="https://laravel.com/docs/11.x/events#generating-events-and-listeners" target="_blank">without arguments</a></p>
+        </section>
+        <section>
+            <section>
+                <h3>Registering Events and Listeners</h3>
+            </section>
+            <section>
+                <p>By default, Laravel will automatically find and register your event listeners by scanning your <u>application's
+                    Listeners directory</u>.</p>
+            </section>
+            <section>
+                <p>When Laravel finds any <u>listener class method that begins with handle or</u> __invoke, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:</p>
+            </section>
+            <section>
+                <pre><code>use App\Events\PodcastProcessed;
+
+class SendPodcastNotification
+{
+    /**
+     * Handle the given event.
+     */
+    public function handle(PodcastProcessed $event): void
+    {
+        // ...
+    }
+}</code></pre>
+            </section>
+            <section>
+                <h3>or in other directories!</h3>
+                <p>(advanced) you may instruct Laravel to scan those directories using the withEvents method in your application's bootstrap/app.php file:</p>
+                <pre><code>->withEvents(discover: [
+    __DIR__.'/../app/Domain/Orders/Listeners',
+])</code></pre>
+            </section>
+            <section>
+                <pre><code>php artisan event:list</code></pre>
+            </section>
+            <section>
+                <h3>Event Discovery in Production</h3>
+                <p>(advanced) To give your application a speed boost, you should cache a manifest of all of your application's listeners using the
+                    <u>optimize</u> or <u>event:cache</u> Artisan commands.</p>
+                <p>The <u>event:clear</u> command may be used to destroy the event cache.</p>
+            </section>
+        </section>
+        <section>
+            <ul>
+                <li><a href="https://laravel.com/docs/11.x/events#manually-registering-events">Manually Registering Events</a></li>
+                <li><a href="https://laravel.com/docs/11.x/events#closure-listeners">Closure Listeners</a></li>
+                <li>...</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Defining Events</h3>
+            <p>hold information related to event <a href="https://laravel.com/docs/11.x/events#defining-events">Sample</a></p>
+        </section>
+        <section>
+           <section>
+               <h3>Defining Listeners</h3>
+               <p class="fragment">
+                   Event listeners receive event instances in their handle method.
+                   <a href="https://laravel.com/docs/11.x/events#defining-listeners">Sample</a>
+               </p>
+           </section>
+            <section>
+                <p class="fragment">(less important) The make:listener Artisan command, when invoked with the --event option, will automatically import the proper event class and type-hint the event in the handle method. </p>
+            </section>
+        </section>
+        <section>
+            <ul>
+                <li><a href="https://laravel.com/docs/11.x/events#stopping-the-propagation-of-an-event">Stopping The Propagation Of An Event</a></li>
+                <li><a href="https://laravel.com/docs/11.x/events#queued-event-listeners">Queued Event Listeners</a></li>
+                <li>Handling Failed Jobs</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Dispatching Events</h3>
+            <p><a href="https://laravel.com/docs/11.x/events#dispatching-events">Sample</a></p>
+            <p>...</p>
+        </section>
+        <section>
+            <h3>Event Subscribers</h3>
+            <p>each event listens to which listener?</p>
+        </section>
+        <section>
+            <ul>
+                <li>Testing...</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Demo</h1>
+            <p><a href="https://github.com/mohyaddin/laravel-event-listener">link</a></p>
+            <p>
+                <a href="https://github.com/mohyaddin/laravel-event-listener/blob/master/app/Events/PurchaseSuccessful.php">Event</a> |
+                <a href="https://github.com/mohyaddin/laravel-event-listener/blob/master/app/Listeners/LogSuccessfulPurchase.php">Listener 1</a> |
+                <a href="https://github.com/mohyaddin/laravel-event-listener/blob/master/app/Listeners/SendPurchaseConfirmationEmail.php">Listener 2</a> |
+                <a href="https://github.com/mohyaddin/laravel-event-listener/blob/master/app/Providers/EventServiceProvider.php">Register(Subscriber)(laravel 10)</a>
+            </p>
+        </section>
     </div>
 </div>
 
